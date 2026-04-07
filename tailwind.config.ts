@@ -21,12 +21,6 @@ const config: Config = {
         serif: ['var(--font-playfair)', 'serif'],
         sans: ['var(--font-inter)', 'sans-serif'],
       },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'spin-slow': 'spin 8s linear infinite',
-        'modal-enter': 'modalEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        'modal-backdrop': 'modalBackdrop 0.4s ease-out',
-      },
       keyframes: {
         modalEnter: {
           '0%': { opacity: '0', transform: 'scale(0.95) translateY(20px)' },
@@ -35,8 +29,19 @@ const config: Config = {
         modalBackdrop: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
         }
-      }
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'spin-slow': 'spin 8s linear infinite',
+        'modal-enter': 'modalEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'modal-backdrop': 'modalBackdrop 0.4s ease-out',
+        'float': 'float 5s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
