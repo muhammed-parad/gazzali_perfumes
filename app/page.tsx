@@ -779,7 +779,7 @@ export default function Home() {
           </div>
 
           {/* Content Side */}
-          <div className="offer-content w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-8">
+          <div className="offer-content w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-6 md:space-y-8">
             <div className="space-y-2">
               <span className="text-[#D4AF37] font-sans text-sm tracking-[0.4em] uppercase block mb-4">Exclusive Deal</span>
               <h2 className="text-5xl md:text-7xl font-['Giomori',_serif] text-white leading-tight">
@@ -787,7 +787,7 @@ export default function Home() {
               </h2>
             </div>
 
-            <p className="text-misty-grey/80 text-lg max-w-md leading-relaxed">
+            <p className="text-misty-grey/80 text-lg max-w-md leading-relaxed hidden md:block">
               Indulge in our most exquisite fragrances. A curated trio of our signature scents, now available at an exclusive price.
             </p>
 
