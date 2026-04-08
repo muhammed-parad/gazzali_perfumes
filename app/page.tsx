@@ -123,20 +123,25 @@ export default function Home() {
   const seq = useRef({ frame: 0 });
 
   useEffect(() => {
-    // Preload PC frames
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      const paddedIndex = i.toString().padStart(3, '0');
-      img.src = `/images/pc-herosection/ezgif-frame-${paddedIndex}.png`;
-      pcImages.current.push(img);
-    }
+    // Detect device to load only relevant assets
+    const isDesktop = window.innerWidth >= 768;
 
-    // Preload Mobile frames
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      const paddedIndex = i.toString().padStart(3, '0');
-      img.src = `/images/herosection/ezgif-frame-${paddedIndex}.png`;
-      mobileImages.current.push(img);
+    if (isDesktop) {
+      // Preload PC frames (Full 240 frames)
+      for (let i = 1; i <= frameCount; i++) {
+        const img = new Image();
+        const paddedIndex = i.toString().padStart(3, '0');
+        img.src = `/images/pc-herosection/ezgif-frame-${paddedIndex}.png`;
+        pcImages.current.push(img);
+      }
+    } else {
+      // Preload Mobile frames (Optimized: Skip every other frame to save bandwidth/memory)
+      for (let i = 1; i <= frameCount; i += 2) {
+        const img = new Image();
+        const paddedIndex = i.toString().padStart(3, '0');
+        img.src = `/images/herosection/ezgif-frame-${paddedIndex}.png`;
+        mobileImages.current.push(img);
+      }
     }
   }, []);
 
@@ -156,14 +161,17 @@ export default function Home() {
         const render = () => {
           const isDesktop = window.innerWidth >= 768;
           const currentImages = isDesktop ? pcImages.current : mobileImages.current;
-          const img = currentImages[seq.current.frame];
+
+          // Map the 0-239 virtual frame to the actual image index
+          // For mobile, we have 120 images (seq.frame / 2), for desktop we have 240.
+          const imgIndex = isDesktop ? seq.current.frame : Math.floor(seq.current.frame / 2);
+          const img = currentImages[imgIndex];
+
           if (img && img.complete) {
             const hRatio = canvas.width / img.width;
             const vRatio = canvas.height / img.height;
             const ratio = Math.max(hRatio, vRatio);
 
-            // For PC (Desktop), center the image (0.5). For Mobile, keep original shift (0.5).
-            // Actually, mobile was also 0.5. So we use 0.5 for both now to "fit screen".
             const shiftXRatio = 0.5;
             const centerShift_x = canvas.width * shiftXRatio - (img.width * ratio) / 2;
             const centerShift_y = (canvas.height - img.height * ratio) / 2;
