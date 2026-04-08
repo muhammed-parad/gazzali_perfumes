@@ -13,7 +13,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     const [added, setAdded] = useState(false);
 
     const handleAddToCart = () => {
-        addToCart(product);
+        addToCart(product, '50ml', 1);
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
     };
@@ -34,8 +34,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <button
                         onClick={handleAddToCart}
                         className={`w-full py-3 rounded-full font-bold text-xs tracking-widest uppercase flex items-center justify-center space-x-2 transition-all duration-300 ${added
-                                ? "bg-green-500 text-white"
-                                : "bg-white text-black hover:bg-[#D4AF37]"
+                            ? "bg-green-500 text-white"
+                            : "bg-white text-black hover:bg-[#D4AF37]"
                             }`}
                     >
                         {added ? (
