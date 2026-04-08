@@ -115,26 +115,29 @@ export default function CartSlider() {
                                             <div className="flex justify-between items-start">
                                                 <h3 className="text-white font-medium text-sm line-clamp-1">{item.name}</h3>
                                                 <button
-                                                    onClick={() => removeFromCart(item.id)}
+                                                    onClick={() => removeFromCart(item.id, item.selectedSize)}
                                                     className="text-white/20 hover:text-red-500 transition-colors"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
-                                            <p className="text-[#D4AF37] text-xs mt-1">{item.price} QAR</p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-[#D4AF37] text-xs">{item.price} QAR</p>
+                                                <span className="text-[10px] text-white/30 uppercase tracking-widest">{item.selectedSize}</span>
+                                            </div>
                                         </div>
 
                                         <div className="flex items-center space-x-3 mt-4">
                                             <div className="flex items-center border border-white/10 rounded-full overflow-hidden">
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}
                                                     className="p-1.5 hover:bg-white/5 text-white/60 hover:text-white transition-colors"
                                                 >
                                                     <Minus className="w-3 h-3" />
                                                 </button>
                                                 <span className="px-3 text-xs text-white">{item.quantity}</span>
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}
                                                     className="p-1.5 hover:bg-white/5 text-white/60 hover:text-white transition-colors"
                                                 >
                                                     <Plus className="w-3 h-3" />

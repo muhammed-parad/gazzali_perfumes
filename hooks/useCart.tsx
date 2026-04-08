@@ -6,6 +6,8 @@ export interface Product {
     id: string;
     name: string;
     price: number;
+    price_50ml?: number;
+    price_100ml?: number;
     image_url: string;
     description?: string;
     stock: number;
@@ -13,13 +15,14 @@ export interface Product {
 
 export interface CartItem extends Product {
     quantity: number;
+    selectedSize: '50ml' | '100ml';
 }
 
 interface CartContextType {
     cart: CartItem[];
-    addToCart: (product: Product) => void;
-    removeFromCart: (productId: string) => void;
-    updateQuantity: (productId: string, quantity: number) => void;
+    addToCart: (product: Product, size: '50ml' | '100ml', quantity: number) => void;
+    removeFromCart: (productId: string, size: '50ml' | '100ml') => void;
+    updateQuantity: (productId: string, size: '50ml' | '100ml', quantity: number) => void;
     clearCart: () => void;
     totalItems: number;
     totalPrice: number;
@@ -51,26 +54,30 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem('gazzali_cart', JSON.stringify(cart));
     }, [cart]);
 
-    const addToCart = (product: Product) => {
+    const addToCart = (product: Product, size: '50ml' | '100ml', quantity: number) => {
         setCart((prev) => {
-            const existing = prev.find((item) => item.id === product.id);
+            const existing = prev.find((item) => item.id === product.id && item.selectedSize === size);
             if (existing) {
                 return prev.map((item) =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    (item.id === product.id && item.selectedSize === size)
+                        ? { ...item, quantity: item.quantity + quantity }
+                        : item
                 );
             }
-            return [...prev, { ...product, quantity: 1 }];
+            // Use the correct price based on size
+            const activePrice = size === '50ml' ? (product.price_50ml || product.price) : (product.price_100ml || product.price);
+            return [...prev, { ...product, price: activePrice, quantity, selectedSize: size }];
         });
     };
 
-    const removeFromCart = (productId: string) => {
-        setCart((prev) => prev.filter((item) => item.id !== productId));
+    const removeFromCart = (productId: string, size: '50ml' | '100ml') => {
+        setCart((prev) => prev.filter((item) => !(item.id === productId && item.selectedSize === size)));
     };
 
-    const updateQuantity = (productId: string, quantity: number) => {
+    const updateQuantity = (productId: string, size: '50ml' | '100ml', quantity: number) => {
         if (quantity < 1) return;
         setCart((prev) =>
-            prev.map((item) => (item.id === productId ? { ...item, quantity } : item))
+            prev.map((item) => (item.id === productId && item.selectedSize === size ? { ...item, quantity } : item))
         );
     };
 

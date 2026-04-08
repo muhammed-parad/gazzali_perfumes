@@ -51,7 +51,7 @@ export default function CheckoutPage() {
     };
 
     const generateWhatsAppMessage = (orderId: string, items: any[]) => {
-        const itemsText = items.map(item => `• ${item.name} (x${item.quantity})`).join('\n');
+        const itemsText = items.map(item => `• ${item.name} (${item.selectedSize}) (x${item.quantity})`).join('\n');
 
         const message = `Hello Misk Gazzali Team,\n\nI just placed an order in your Digital Boutique:\n\nOrder ID: ${orderId.split('-')[0].toUpperCase()}\nCustomer: ${formData.fullName}\nPhone: ${formData.phone}\nAddress: ${formData.address}, ${formData.area}\n\nOrder Details:\n${itemsText}\n\nTotal: ${totalPrice} QAR\nPayment: Cash on Delivery\n\nPlease confirm my order. Thank you!`;
 
@@ -103,7 +103,8 @@ export default function CheckoutPage() {
             const orderItems = cart.map(item => ({
                 order_id: order.id,
                 product_id: item.id,
-                quantity: item.quantity
+                quantity: item.quantity,
+                size: item.selectedSize
             }));
 
             const { error: itemsError } = await supabase
@@ -284,7 +285,7 @@ export default function CheckoutPage() {
 
                             <div className="space-y-6 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                                 {cart.map((item) => (
-                                    <div key={item.id} className="flex justify-between items-center gap-4">
+                                    <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between items-center gap-4">
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-16 bg-white/5 rounded-lg overflow-hidden border border-white/10">
                                                 <img
@@ -295,7 +296,10 @@ export default function CheckoutPage() {
                                             </div>
                                             <div>
                                                 <h4 className="text-white text-sm font-medium line-clamp-1">{item.name}</h4>
-                                                <p className="text-misty-grey/60 text-xs mt-1">Qty: {item.quantity}</p>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <p className="text-misty-grey/60 text-xs">Qty: {item.quantity}</p>
+                                                    <span className="text-[10px] px-1.5 py-0.5 bg-white/5 rounded text-white/40 uppercase tracking-tighter">{item.selectedSize}</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <span className="text-white text-sm font-medium">{item.price * item.quantity} QAR</span>

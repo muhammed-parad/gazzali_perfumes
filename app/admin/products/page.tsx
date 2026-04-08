@@ -14,9 +14,11 @@ export default function AdminProducts() {
     const [formData, setFormData] = useState({
         name: "",
         price: "",
+        price_50ml: "",
+        price_100ml: "",
         image_url: "",
         description: "",
-        stock: "0"
+        stock: "99999"
     });
 
     useEffect(() => {
@@ -39,19 +41,23 @@ export default function AdminProducts() {
             setEditingProduct(product);
             setFormData({
                 name: product.name,
-                price: product.price.toString(),
+                price: product.price?.toString() || "",
+                price_50ml: product.price_50ml?.toString() || "",
+                price_100ml: product.price_100ml?.toString() || "",
                 image_url: product.image_url || "",
                 description: product.description || "",
-                stock: product.stock.toString()
+                stock: product.stock?.toString() || "99999"
             });
         } else {
             setEditingProduct(null);
             setFormData({
                 name: "",
                 price: "",
+                price_50ml: "",
+                price_100ml: "",
                 image_url: "",
                 description: "",
-                stock: "0"
+                stock: "99999"
             });
         }
         setIsModalOpen(true);
@@ -68,10 +74,12 @@ export default function AdminProducts() {
 
         const payload = {
             name: formData.name,
-            price: parseFloat(formData.price),
+            price: parseFloat(formData.price) || 0,
+            price_50ml: parseFloat(formData.price_50ml) || null,
+            price_100ml: parseFloat(formData.price_100ml) || null,
             image_url: formData.image_url,
             description: formData.description,
-            stock: parseInt(formData.stock)
+            stock: parseInt(formData.stock) || 99999
         };
 
         try {
@@ -170,7 +178,17 @@ export default function AdminProducts() {
                         <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
                             <div>
                                 <h3 className="text-white font-serif text-lg tracking-wide line-clamp-1 group-hover:text-[#D4AF37] transition-colors">{product.name}</h3>
-                                <p className="text-[#D4AF37] font-bold text-xl mt-1">{product.price} <small className="text-[10px] uppercase font-normal ml-1">QAR</small></p>
+                                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                                    {product.price_50ml && (
+                                        <p className="text-[#D4AF37] font-bold text-sm">50ml: {product.price_50ml} <small className="text-[8px] uppercase font-normal">QAR</small></p>
+                                    )}
+                                    {product.price_100ml && (
+                                        <p className="text-[#D4AF37] font-bold text-sm">100ml: {product.price_100ml} <small className="text-[8px] uppercase font-normal">QAR</small></p>
+                                    )}
+                                    {!product.price_50ml && !product.price_100ml && (
+                                        <p className="text-[#D4AF37] font-bold text-sm">{product.price} <small className="text-[8px] uppercase font-normal">QAR</small></p>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -214,15 +232,36 @@ export default function AdminProducts() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold ml-1">Price (QAR)</label>
+                                    <label className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold ml-1">Price 50ml (QAR)</label>
                                     <input
-                                        required
+                                        type="number"
+                                        step="0.01"
+                                        value={formData.price_50ml}
+                                        onChange={(e) => setFormData({ ...formData, price_50ml: e.target.value })}
+                                        placeholder="0.00"
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold ml-1">Price 100ml (QAR)</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={formData.price_100ml}
+                                        onChange={(e) => setFormData({ ...formData, price_100ml: e.target.value })}
+                                        placeholder="0.00"
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm"
+                                    />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Default Price (Fallback)</label>
+                                    <input
                                         type="number"
                                         step="0.01"
                                         value={formData.price}
                                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                         placeholder="0.00"
-                                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm"
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm opacity-60"
                                     />
                                 </div>
                             </div>

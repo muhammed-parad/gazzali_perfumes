@@ -143,7 +143,10 @@ export default function AdminOrders() {
                                     <div className="space-y-1.5 max-w-[150px] md:max-w-xs">
                                         {order.order_items.map((item: any, idx: number) => (
                                             <div key={idx} className="text-[11px] text-misty-grey flex justify-between gap-4">
-                                                <span className="truncate">{item.products?.name || 'Unknown Product'}</span>
+                                                <div className="flex items-center gap-2 truncate">
+                                                    <span className="truncate">{item.products?.name || 'Unknown Product'}</span>
+                                                    {item.size && <span className="text-[9px] px-1.5 py-0.5 bg-white/5 rounded text-white/40 uppercase tracking-tighter">{item.size}</span>}
+                                                </div>
                                                 <span className="text-white/40 shrink-0">x{item.quantity}</span>
                                             </div>
                                         ))}
