@@ -42,8 +42,8 @@ export default function ShopHeader() {
     return (
         <header
             className={`fixed top-0 z-[60] w-full transition-all duration-500 ease-in-out px-6 ${isScrolled
-                    ? "h-[60px] bg-black/70 backdrop-blur-[10px] border-b border-white/5"
-                    : "h-[80px] bg-transparent"
+                ? "h-[60px] bg-black/70 backdrop-blur-[10px] border-b border-white/5"
+                : "h-[80px] bg-transparent"
                 }`}
         >
             <div className="max-w-7xl mx-auto h-full flex items-center justify-between relative">
@@ -59,7 +59,7 @@ export default function ShopHeader() {
                 </Link>
 
                 {/* Center: Logo */}
-                <div className={`absolute left-1/2 -translate-x-1/2 flex items-center transition-opacity duration-300 ${isSearchOpen ? 'opacity-0 pointer-events-none md:opacity-100' : 'opacity-100'}`}>
+                <div className={`absolute left-1/2 -translate-x-1/2 items-center transition-opacity duration-300 ${isSearchOpen ? 'opacity-0 pointer-events-none md:opacity-100' : 'opacity-100'} hidden md:flex`}>
                     <div className="text-center text-[#D4AF37]">
                         <span className="block font-playfair text-xl md:text-2xl tracking-[0.4em] uppercase leading-none">
                             Misk Gazzali

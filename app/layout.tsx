@@ -10,6 +10,14 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfa
 export const metadata: Metadata = {
   title: "Gazzali Perfumes | Discover Your Signature Scent",
   description: "Experience premium, long-lasting fragrances with exotic notes of Bergamot, Jasmine, and Oud.",
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 import WhatsAppButton from "../components/WhatsAppButton";

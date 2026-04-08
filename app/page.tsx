@@ -445,7 +445,7 @@ export default function Home() {
           {/* Light blur overlay dedicated only to mobile so the bottle remains highly visible */}
           <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-0"></div>
 
-          <div className="hero-logo absolute top-10 left-1/2 -translate-x-1/2 opacity-0 font-sans tracking-[0.4em] text-[#D4AF37] text-sm uppercase z-20 drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]">
+          <div className="hero-logo absolute top-10 left-1/2 -translate-x-1/2 opacity-0 font-sans tracking-[0.4em] text-[#D4AF37] text-sm uppercase z-20 drop-shadow-[0_0_10px_rgba(212,175,55,0.5)] hidden md:block">
             Gazzali
           </div>
 

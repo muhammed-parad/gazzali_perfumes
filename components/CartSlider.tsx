@@ -48,7 +48,7 @@ export default function CartSlider() {
             {pathname === "/" && (
                 <button
                     onClick={handleCartClick}
-                    className="fixed bottom-24 right-6 md:bottom-28 md:right-8 z-50 p-4 bg-[#D4AF37] text-black rounded-full shadow-lg hover:scale-110 transition-all duration-300 group"
+                    className="fixed bottom-24 right-6 md:bottom-28 md:right-8 z-50 p-4 bg-[#D4AF37] text-black rounded-full shadow-lg hover:scale-110 transition-all duration-300 group hidden md:flex"
                 >
                     <ShoppingBag className="w-6 h-6" />
                     {totalItems > 0 && (

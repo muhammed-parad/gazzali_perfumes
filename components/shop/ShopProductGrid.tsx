@@ -21,9 +21,9 @@ export default function ShopProductGrid({ products }: ShopProductGridProps) {
     return (
         <section className="max-w-7xl mx-auto px-6 py-20 pb-40">
             {/* Asymmetric Masonry Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-12 gap-y-12 md:gap-y-24">
                 {products.map((product, idx) => {
-                    // Create asymmetric feel by adding different top margins/offsets based on index
+                    // Create asymmetric feel by adding different top margins/offsets based on index (Desktop only)
                     const isEven = idx % 2 === 0;
                     const isThird = (idx + 1) % 3 === 0;
 
