@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import WhatsAppButton from "../components/WhatsAppButton";
+import LenisProvider from "../components/LenisProvider";
 
 export default function RootLayout({
   children,
@@ -30,10 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${montserrat.variable} ${playfair.variable} antialiased selection:bg-gold-accent-1/30`}>
-        <CartProvider>
-          {children}
-          <CartSlider />
-        </CartProvider>
+        <LenisProvider>
+          <CartProvider>
+            {children}
+            <CartSlider />
+          </CartProvider>
+        </LenisProvider>
 
         <WhatsAppButton />
       </body>

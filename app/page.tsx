@@ -197,7 +197,7 @@ export default function Home() {
             trigger: ".hero-container",
             start: "top top",
             end: "+=3000",
-            scrub: 1,
+            scrub: 0.5,
             pin: true,
           },
           onUpdate: render
@@ -284,7 +284,6 @@ export default function Home() {
     // --- SCROLL-SYNC OPACITY & BLUR ---
     gsap.to('.hero-text-container-desktop, .hero-text-container-mobile', {
       opacity: 0,
-      filter: "blur(12px)",
       y: -100,
       ease: "none",
       scrollTrigger: {
