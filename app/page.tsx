@@ -123,26 +123,53 @@ export default function Home() {
   const seq = useRef({ frame: 0 });
 
   useEffect(() => {
-    // Detect device to load only relevant assets
     const isDesktop = window.innerWidth >= 768;
+    const currentImages = isDesktop ? pcImages.current : mobileImages.current;
+    
+    // Clear array on mount in case of React fast refresh
+    currentImages.length = 0;
 
-    if (isDesktop) {
-      // Preload PC frames (Full 240 frames)
-      for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        const paddedIndex = i.toString().padStart(3, '0');
-        img.src = `/images/pc-herosection/ezgif-frame-${paddedIndex}.png`;
-        pcImages.current.push(img);
+    // Desktop: 120 frames (every 2), Mobile: 80 frames (every 3) out of 240
+    const step = isDesktop ? 2 : 3;
+    const totalDesiredFrames = Math.floor(frameCount / step);
+    const preloadLinks: HTMLLinkElement[] = [];
+
+    for (let index = 0; index < totalDesiredFrames; index++) {
+      const originalFrame = (index * step) + step; // e.g., 2, 4, 6...
+      const paddedIndex = originalFrame.toString().padStart(3, '0');
+      const src = isDesktop 
+        ? `/images/pc-herosection/ezgif-frame-${paddedIndex}.webp`
+        : `/images/herosection/ezgif-frame-${paddedIndex}.webp`;
+
+      if (index < 5) {
+         const link = document.createElement('link');
+         link.rel = 'preload';
+         link.as = 'image';
+         link.href = src;
+         document.head.appendChild(link);
+         preloadLinks.push(link);
       }
-    } else {
-      // Preload Mobile frames (Optimized: Skip every other frame to save bandwidth/memory)
-      for (let i = 1; i <= frameCount; i += 2) {
+
+      const loadImage = () => {
         const img = new Image();
-        const paddedIndex = i.toString().padStart(3, '0');
-        img.src = `/images/herosection/ezgif-frame-${paddedIndex}.png`;
-        mobileImages.current.push(img);
+        img.src = src;
+        currentImages[index] = img;
+      };
+
+      if (index < 25) {
+         // Load first few immediately
+         loadImage();
+      } else {
+         // Defer loading the rest to not block initial render
+         setTimeout(loadImage, 200 + index * 5); 
       }
     }
+
+    return () => {
+      preloadLinks.forEach(link => {
+        if (document.head.contains(link)) document.head.removeChild(link);
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -162,9 +189,12 @@ export default function Home() {
           const isDesktop = window.innerWidth >= 768;
           const currentImages = isDesktop ? pcImages.current : mobileImages.current;
 
-          // Map the 0-239 virtual frame to the actual image index
-          // For mobile, we have 120 images (seq.frame / 2), for desktop we have 240.
-          const imgIndex = isDesktop ? seq.current.frame : Math.floor(seq.current.frame / 2);
+          const step = isDesktop ? 2 : 3;
+          let imgIndex = Math.floor(seq.current.frame / step);
+          
+          if (imgIndex < 0) imgIndex = 0;
+          if (imgIndex >= currentImages.length) imgIndex = currentImages.length - 1;
+          
           const img = currentImages[imgIndex];
 
           if (img && img.complete) {
@@ -188,6 +218,7 @@ export default function Home() {
         if (mobileImages.current[0]) {
           mobileImages.current[0].onload = render;
         }
+        render(); // fallback if images are already cached
 
         gsap.to(seq.current, {
           frame: frameCount - 1,
