@@ -129,17 +129,18 @@ export default function Home() {
     // Clear array on mount in case of React fast refresh
     currentImages.length = 0;
 
-    // Desktop: 120 frames (every 2), Mobile: 80 frames (every 3) out of 240
-    const step = isDesktop ? 2 : 3;
-    const totalDesiredFrames = Math.floor(frameCount / step);
+    // Desktop: 120 frames (every 2 out of 240). Mobile: Just 1 static frame serving as bg.
+    const step = isDesktop ? 2 : 1;
+    const totalDesiredFrames = isDesktop ? Math.floor(frameCount / step) : 1;
     const preloadLinks: HTMLLinkElement[] = [];
 
     for (let index = 0; index < totalDesiredFrames; index++) {
-      const originalFrame = (index * step) + step; // e.g., 2, 4, 6...
+      // For mobile, index is 0, we just want frame 001.
+      const originalFrame = isDesktop ? (index * step) + step : 1; 
       const paddedIndex = originalFrame.toString().padStart(3, '0');
       const src = isDesktop 
         ? `/images/pc-herosection/ezgif-frame-${paddedIndex}.webp`
-        : `/images/herosection/ezgif-frame-${paddedIndex}.webp`;
+        : `/images/herosection/ezgif-frame-001.webp`;
 
       if (index < 5) {
          const link = document.createElement('link');
