@@ -176,6 +176,8 @@ export default function Home() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    let mm = gsap.matchMedia();
+
     let handleResize = () => { };
 
     // --- CANVAS SCRUBBING LOGIC ---
@@ -221,18 +223,35 @@ export default function Home() {
         }
         render(); // fallback if images are already cached
 
-        gsap.to(seq.current, {
-          frame: frameCount - 1,
-          snap: "frame",
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".hero-container",
-            start: "top top",
-            end: "+=3000",
-            scrub: 0.5,
-            pin: true,
-          },
-          onUpdate: render
+        mm.add("(min-width: 768px)", () => {
+          gsap.to(seq.current, {
+            frame: frameCount - 1,
+            snap: "frame",
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".hero-container",
+              start: "top top",
+              end: "+=3000",
+              scrub: 0.5,
+              pin: true,
+            },
+            onUpdate: render
+          });
+        });
+
+        mm.add("(max-width: 767px)", () => {
+          gsap.to(seq.current, {
+            frame: 1, 
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".hero-container",
+              start: "top top",
+              end: "+=600", // Much shorter pin for mobile
+              scrub: 0.5,
+              pin: true,
+            },
+            onUpdate: render
+          });
         });
 
         handleResize = () => {
@@ -314,19 +333,33 @@ export default function Home() {
     );
 
     // --- SCROLL-SYNC OPACITY & BLUR ---
-    gsap.to('.hero-text-container-desktop, .hero-text-container-mobile', {
-      opacity: 0,
-      y: -100,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero-container",
-        start: "top top",
-        end: "+=1200",
-        scrub: true
-      }
+    mm.add("(min-width: 768px)", () => {
+      gsap.to('.hero-text-container-desktop', {
+        opacity: 0,
+        y: -100,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-container",
+          start: "top top",
+          end: "+=1200",
+          scrub: true
+        }
+      });
     });
 
-    let mm = gsap.matchMedia();
+    mm.add("(max-width: 767px)", () => {
+      gsap.to('.hero-text-container-mobile', {
+        opacity: 0,
+        y: -100,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-container",
+          start: "top top",
+          end: "+=600", // Matches the brief mobile pin duration
+          scrub: true
+        }
+      });
+    });
 
     // --- NOTES ANIMATIONS ---
     const notes = gsap.utils.toArray('.note-item');
