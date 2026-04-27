@@ -20,9 +20,9 @@ const playfair = Playfair_Display({
 
 // Metadata (SEO + Google Verification)
 export const metadata: Metadata = {
-  title: "Gazzali Perfumes | Discover Your Signature Scent",
+  title: "Gazzali Perfumes Qatar | Premium Attar & Fragrances",
   description:
-    "Experience premium, long-lasting fragrances with exotic notes of Bergamot, Jasmine, and Oud.",
+    "Gazzali Perfumes is a Qatar-based perfume brand offering premium attars and long-lasting fragrances.",
 
   icons: {
     icon: [
