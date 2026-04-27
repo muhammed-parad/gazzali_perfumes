@@ -114,7 +114,7 @@ export default function Home() {
     });
   };
 
-  const desc = "Gazzali Perfumes is a celebration of timeless luxury and refined craftsmanship. Each fragrance is carefully composed using the finest ingredients, blending tradition with modern sophistication. Designed for those who appreciate elegance in its purest form.";
+  const desc = "Gazzali Perfumes is a Qatar-based perfume brand offering premium attars and long-lasting fragrances. Shop luxury perfumes online with rich notes like oud, jasmine, and musk. Each fragrance is carefully composed using the finest ingredients, blending tradition with modern sophistication. Designed for those who appreciate elegance in its purest form.";
 
   // Image sequence setup
   const frameCount = 240;
