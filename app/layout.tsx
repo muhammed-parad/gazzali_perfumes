@@ -20,9 +20,32 @@ const playfair = Playfair_Display({
 
 // Metadata (SEO + Google Verification)
 export const metadata: Metadata = {
-  title: "Gazzali Perfumes Qatar | Attar & Luxury Fragrances",
+  metadataBase: new URL("https://gazzali-perfumes.vercel.app"),
+
+  title: "Misk Perfumes Qatar | Long Lasting Oud & Musk | Gazzali Perfumes",
+
   description:
     "Buy premium attar perfumes in Qatar. Explore long-lasting oud, musk & alcohol-free fragrances from Gazzali Perfumes.",
+
+  applicationName: "Gazzali Perfumes",
+
+  openGraph: {
+    title: "Gazzali Perfumes Qatar",
+    description:
+      "Premium attar perfumes and luxury fragrances in Qatar.",
+    siteName: "Gazzali Perfumes",
+    url: "https://gazzali-perfumes.vercel.app",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Gazzali Perfumes Qatar",
+    description:
+      "Premium attar perfumes and long-lasting fragrances.",
+  },
+
+  manifest: "/site.webmanifest",
 
   icons: {
     icon: [
